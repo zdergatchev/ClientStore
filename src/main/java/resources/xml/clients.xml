@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<clients>
+	<clients id="1">
+		<email>georgi_g@gmail.com</email>	
+		<firstName>Georgi</firstName>
+		<lastName>Georgiev</lastName>		
+	</clients>
+<clients id="2">
+	<email>ivan.ivanov@hotmail.com</email>	
+	<firstName>Ivan</firstName>
+	<lastName>Ivanov</lastName>		
+</clients>
+	<clients id="3">
+		<email>petar_pt@yahoo.com</email>	
+		<firstName>Patar</firstName>
+		<lastName>Petrov</lastName>		
+	</clients>
+<clients id="4">
+	<email>anna.petrova@mail.bg</email>	
+	<firstName>Anna</firstName>
+	<lastName>Petrova</lastName>		
+</clients>
+	<clients id="5">
+		<email>lili_i@abv.bg</email>	
+		<firstName>Lili</firstName>
+		<lastName>Ivanova</lastName>		
+	</clients>
+<clients id="6">
+	<email>stefan_st@abv.bg</email>	
+	<firstName>Stefan</firstName>
+	<lastName>Stefanov</lastName>		
+</clients>
+</clients>
