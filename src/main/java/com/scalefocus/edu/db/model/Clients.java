@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -19,7 +20,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 /* http://www.javainterviewpoint.com/spring-restful-web-services-crud-example/ */
@@ -27,17 +27,19 @@ import com.sun.istack.NotNull;
 
 	@Entity
 	@Table(name = "clients")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@NamedQuery(name="Clients.findAll", query="SELECT c FROM Clients c")
+	@XmlRootElement()
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlRootElement(name = "Clients")
-	
 public class Clients implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "client_id", unique = true)
     @PrimaryKeyJoinColumn(name = "client_id")
-    private int clientId;
+    private int id;
 
     @NotNull
     @Column(name = "email", length = 30, unique = true)	    
@@ -64,12 +66,12 @@ public class Clients implements Serializable {
 		this.addresses = addresses;
 	}
 
-    public void setClientId(int clientId) {
-		this.clientId = clientId;
+    public void setClientId(int id) {
+		this.id = id;
 	}
 	
 	public int getClientId() {
-		return clientId;
+		return id;
 	}
 
     

@@ -15,6 +15,7 @@ public class AppInitializer implements WebApplicationInitializer{
 		WebApplicationContext context = getContext();
 		servletContext.addListener(new ContextLoaderListener(context));
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("cxf", CXFServlet.class);
+		System.out.println("CFX");
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/*");
 	}

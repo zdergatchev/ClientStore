@@ -24,8 +24,8 @@ public class CXFConfig {
 	@Autowired
 	private Bus bus;
 
-	@Autowired
-	private ClientStoreAPIWSImpl clientStoreWS;
+	//@Autowired
+	//private ClientStoreAPIWSImpl clientStoreWS;
 	
 	@Autowired
 	private ClientStoreAPIRSImpl clientStoreRS;
@@ -34,9 +34,9 @@ public class CXFConfig {
 	@PostConstruct
 	public void init() {
 		// Initializing WS Service endpoint
-		Endpoint endpoint = new EndpointImpl(bus, clientStoreWS);
-		endpoint.publish("/ws/clientStore");
-		
+		//Endpoint endpoint = new EndpointImpl(bus, clientStoreWS);
+		//endpoint.publish("/ws/clientStore");
+		System.out.println("MMMMMMMMMMM");
 		// initializes JAX-RS provider and service endpoint
 		// https://cwiki.apache.org/confluence/display/CXF20DOC/JAXRS+Services+Configuration //
 		// https://stackoverflow.com/questions/48327530/apache-cxf-jaxrsserverfactorybean-server-started-but-not-able-to-access-the-en //

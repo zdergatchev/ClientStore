@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.ws.rs.client.Client;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -57,7 +56,7 @@ public class Addresses implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name="client_id", nullable=false)
 	@Cascade(CascadeType.ALL)
-    private Client client;
+    private Clients clients;
     
     
     public int getAddressId() {
@@ -100,12 +99,12 @@ public class Addresses implements Serializable {
 		this.addressline = addressline;
 	} 
 	
-	public Client getClient() {
-		return client;
+	public Clients getClient() {
+		return clients;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setClient(Clients clients) {
+		this.clients = clients;
 	} 
 }
 

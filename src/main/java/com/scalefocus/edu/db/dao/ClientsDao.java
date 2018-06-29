@@ -2,8 +2,8 @@ package com.scalefocus.edu.db.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Service;
 
 import com.scalefocus.edu.db.model.Clients;
 
@@ -11,12 +11,20 @@ import com.scalefocus.edu.db.model.Clients;
 /* https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html */
 /* https://stackoverflow.com/questions/14014086/what-is-difference-between-crudrepository-and-jparepository-interfaces-in-spring */
 
-@Repository
-public interface ClientsDao extends JpaRepository<Clients, String>{
-	public Clients retrieveClientsById(int id);  			// GET
-	public Clients retrieveClientsByEmail(String email);  	// GET
-	public List<Clients> retrieveAllClients();				// GET
-	public void createClient(Clients clients);				// POST
-	public void updateClient(int id);						// PUT							  					
-	public void deleteClient(int id);						// DELETE
+@Service
+public interface ClientsDao extends CrudRepository<Clients, Integer> {
+	
+	Clients findById(int id); // GET
+
+	Clients findByEmail(String email); // GET
+
+	List<Clients> findAll(); // GET	
+	
+	
+	//Clients createClient(Clients clients); // POST
+
+	//Clients updateClient(int id); // PUT
+
+	//Clients delete(int id); // DELETE
+
 }
