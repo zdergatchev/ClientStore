@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
 
 public interface ClientStoreAPIRS {
@@ -13,6 +14,10 @@ public interface ClientStoreAPIRS {
 	public Response findById(int id);  										// GET
 	public Response findByEmail(String email);  							// GET
 	public List<ClientsAPI> findAll();										// GET
-	public String sayHi();						  					
+	public String sayHi();	
 	
+	Response createAddresses(int id, AddressesAPI addressesAPI);
+	Response updateAddresses(int id, AddressesAPI addressesAPI);
+	Response deleteAddresses(int id, AddressesAPI addressesAPI);
+	List<AddressesAPI> showAll(int id);	
 }

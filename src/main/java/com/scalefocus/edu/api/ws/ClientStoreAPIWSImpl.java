@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.scalefocus.edu.api.ClientStoreAPIWS;
+import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
 import com.scalefocus.edu.service.ClientStoreService;
 
@@ -60,7 +61,7 @@ import com.scalefocus.edu.service.ClientStoreService;
 	}
 	
 	@GET
-	@Path("/clients/{id}")
+	@Path("/clients/id/{id}")
 	@Produces("application/xml")
 	@Override
 	public Response findById(@RequestBody int id) {	
@@ -80,7 +81,7 @@ import com.scalefocus.edu.service.ClientStoreService;
 	}
 
 	@GET
-	@Path("/clients/{id}")
+	@Path("/clients")
 	@Produces("application/xml")
 	@Override
 	public List<ClientsAPI> findAll() {

@@ -106,6 +106,12 @@ public class Clients implements Serializable {
 	public void setAddresses(List<Addresses> addresses) {			
 		this.addresses = addresses;
 	} 
+	
+	@Override
+	public String toString() {
+		return "id: '" + this.id + "', email: '" + this.email + "', FirstName: '" + this.firstName + "', LastName: '" + this.lastName + "'";
+	}
+	
 }
 
 

@@ -24,18 +24,17 @@ import com.sun.istack.NotNull;
 /* http://www.javainterviewpoint.com/spring-restful-web-services-crud-example/ */
 /* https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-two-crud/ */
 
-	@Entity
-	@Table(name = "addresses")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlRootElement(name = "Addresses")
-	
+@Entity
+@Table(name = "addresses")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Addresses")	
 public class Addresses implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "address_id", unique = true)
-    private int addressId;
+	@Column(name = "id", unique = true)
+    private int id;
 
     @NotNull
     @Column(name = "country", length = 30)	    
@@ -60,11 +59,11 @@ public class Addresses implements Serializable {
     
     
     public int getAddressId() {
-		return addressId;
+		return id;
 	}
 
-	public void setAddressId(int addressId) {
-		this.addressId = addressId;
+	public void setAddressId(int id) {
+		this.id = id;
 	}
     
     public String getCountry() {

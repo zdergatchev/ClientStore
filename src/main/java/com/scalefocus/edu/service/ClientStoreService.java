@@ -7,8 +7,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
-import com.scalefocus.edu.db.dao.AddressesDao;
 import com.scalefocus.edu.db.dao.ClientsDao;
 import com.scalefocus.edu.db.model.Addresses;
 import com.scalefocus.edu.db.model.Clients;
@@ -18,9 +18,6 @@ public class ClientStoreService {
 
 	@Autowired
 	private ClientsDao clientsDao;
-	
-	@Autowired
-	private AddressesDao addressesDao;
 
 	@Autowired
 	private DozerBeanMapper mapper;
@@ -40,8 +37,11 @@ public class ClientStoreService {
 	}
 
 	public Clients findById(int id) {
-		if (this.clientsDao.findById(id) != null) {
-			System.out.println(this.clientsDao.findById(id));
+		Clients clients = this.clientsDao.findById(id);
+//		if (this.clientsDao.findById(id) != null) {
+		if (clients != null) {
+//			System.out.println(this.clientsDao.findById(id));
+			System.out.println(clients);
 		} else {
 			System.out.println("Client not found by id");
 		}
@@ -49,8 +49,12 @@ public class ClientStoreService {
 	}
 	
 	public Clients findByEmail(String email) {
-		if (this.clientsDao.findByEmail(email) != null) {
-			System.out.println(this.clientsDao.findByEmail(email));
+		
+		Clients clients = this.clientsDao.findByEmail(email);
+//		System.out.println(email);
+		if (clients != null) {
+//			System.out.println(clients.getEmail());
+			System.out.println(clients);
 		} else {
 			System.out.println("Client not found by email");
 		}
@@ -70,7 +74,7 @@ public class ClientStoreService {
 	public List<ClientsAPI> findAll() {
 		Iterable<Clients> dbClients = this.clientsDao.findAll();
 		for(Clients c : dbClients){
-			System.out.println(c.getEmail() + c.getFirstName() + c.getLastName());
+			System.out.println(c.getClientId() + " " + c.getEmail() + " " + c.getFirstName() + " " + c.getLastName());
 		}
 //		dbClients.forEach(dbClient-> System.out.println(dbClient));
 		return null;		
@@ -89,19 +93,69 @@ public class ClientStoreService {
 	
 	
 	public Clients updateClient(int id, ClientsAPI clientsAPI) {
-		Clients dbClient = this.clientsDao.findOne(id);
-//		if(this.clientsDao.findOne(clientsAPI.getId()) != null) {			
-			if (dbClient != null) {
-			clientsAPI.setId(id);
-			
-			for(Addresses addresses : dbClient.getAddresses()) {
-				this.addressesDao.delete(addresses.getAddressId());
+		Clients clients = this.clientsDao.findById(id);
+//		if(this.clientsDao.findOne(clientsAPI.getId()) != null) {	
+		if (clients != null) {			
+			if(clients.getFirstName() != clientsAPI.getFirstName() ) {
+				clients.setFirstName(clientsAPI.getFirstName());
 			}
-			dbClient = this.addressesDao.save(mapApiToClient(clientsAPI));
-			System.out.println(dbClient);
+			
+			if(clients.getLastName() != clientsAPI.getLastName() ) {
+				clients.setLastName(clientsAPI.getLastName());
+			}
+			
+
+//			List<Addresses> dbAddresses = new ArrayList<Addresses>();
+//			List<AddressesAPI> apiAddresses = new ArrayList<AddressesAPI>();
+//			apiAddresses.add(clients.getAddresses());//
+
+			
+//			apiAddresses.add("Bulgaria");
+//			apiAddresses.add("Sofia");
+//			apiAddresses.add("1000");
+//			apiAddresses.add("Mogilata Str. 56");
+//			Addresses adress1 = new Addresses();
+//			Addresses adress2 = new Addresses();
+//			Addresses adress3 = new Addresses();
+//			
+//			adress1.setCountry("Bulgaria");
+//			adress1.setCity("Sofia");
+//			adress1.setZipcode("1000");
+//			adress1.setAddressline("Mogilata Str. 56");
+//			adress1.setClient(clients);
+//			
+//			adress2.setCountry("Bulgaria");
+//			adress2.setCity("Sliven");
+//			adress2.setZipcode("8800");
+//			adress2.setAddressline("Sirma Str. 10");
+//			adress2.setClient(clients);
+//			
+//			adress3.setCountry("Bulgaria");
+//			adress3.setCity("Plovdiv");
+//			adress3.setZipcode("4000");
+//			adress3.setAddressline("Tzar Boris Bul. 128");
+//			adress3.setClient(clients);
+//			
+//			dbAddresses.add(adress1);
+//			dbAddresses.add(adress2);
+//			dbAddresses.add(adress3);
+//			
+//			clients.setAddresses(dbAddresses);
+			
+//			for(Addresses addresses : client.getAddresses()) {
+//			this.addressesDao.delete(addresses.getAddressId());
+		//}
+		//clients = this.addressesDao.save(clients);
+		
+			
+			this.clientsDao.save(clients);
+
+			System.out.println("Client is updated");
 		}
+		
 		return null;
 	}	
+			
 
 
 	public String sayHi() {
@@ -111,5 +165,86 @@ public class ClientStoreService {
 	private Clients mapApiToClient(ClientsAPI clientsAPI) {
 		return mapper.map(clientsAPI, Clients.class);
 	}
+	
+// ADDRESES
+	
+	public Addresses createAddresses(int id, AddressesAPI addressesAPI){
+		Clients clients = this.clientsDao.findById(id);
+		System.out.println(clients);
+		List<Addresses> dbAddresses = new ArrayList<Addresses>();
+		
+		if (clients != null) {
+			for(int i = 0; i < dbAddresses.size(); i++) {
+				Addresses dbAddress = dbAddresses.get(i);				
+				dbAddress.setAddressId(addressesAPI.getAddressId());
+				dbAddress.setCountry(addressesAPI.getCountry());
+				dbAddress.setCity(addressesAPI.getCity());
+				dbAddress.setZipcode(addressesAPI.getZipcode());
+				dbAddress.setAddressline(addressesAPI.getAddressline());
+				
+				clients.setAddresses(dbAddresses);
+				this.clientsDao.save(clients);
+				System.out.println(this.clientsDao.save(clients));
+			}	
+		}
+		
+		return null;
+	}
+	
+	public Addresses updateAddresses(int id, AddressesAPI addressesAPI){
+		Clients clients = this.clientsDao.findById(id);
+		System.out.println(clients);
+		List<Addresses> dbAddresses = new ArrayList<Addresses>();
+		if (clients != null & clients.getAddresses().isEmpty() != true) {	
+			for(int i = 0; i < dbAddresses.size(); i++) {
+				Addresses dbAddress = dbAddresses.get(i);				
+				dbAddress.setAddressId(addressesAPI.getAddressId());
+				dbAddress.setCountry(addressesAPI.getCountry());
+				dbAddress.setCity(addressesAPI.getCity());
+				dbAddress.setZipcode(addressesAPI.getZipcode());
+				dbAddress.setAddressline(addressesAPI.getAddressline());
+				
+				clients.setAddresses(dbAddresses);
+				this.clientsDao.save(clients);
+//			System.out.println(dbAddress);
+			}	
+		}
+		
+		return null;
+	}
+	
+	public Addresses deleteAddresses(int id, AddressesAPI addressesAPI){
+		Clients clients = this.clientsDao.findById(id);
 
+		List<Addresses> dbAddresses = new ArrayList<Addresses>();
+		if (clients != null) {
+			for(int i = 0; i < dbAddresses.size(); i++) {
+//				Addresses dbAddress = dbAddresses.get(i);
+				dbAddresses.remove(i);
+				
+//				dbAddress.setAddressId(addressesAPI.getAddressId());
+//				dbAddress.setCountry(null);
+//				dbAddress.setCity(null);
+//				dbAddress.setZipcode(null);
+//				dbAddress.setAddressline(null);
+				
+				clients.setAddresses(dbAddresses);
+				this.clientsDao.save(clients);
+//			System.out.println(dbAddress);
+			}	
+		}
+		
+		return null;
+	}
+	
+	public List<AddressesAPI> showAll(int id) {
+		Clients clients = this.clientsDao.findById(id);
+		
+		Iterable<Addresses> dbAddresses = clients.getAddresses();
+		for(Addresses a : dbAddresses){
+			System.out.println(a.getAddressId() + " " + a.getCountry() + " " + a.getCity() + " " + a.getZipcode());
+		}
+//		dbClients.forEach(dbClient-> System.out.println(dbClient));
+		return null;		
+	 }
 }
