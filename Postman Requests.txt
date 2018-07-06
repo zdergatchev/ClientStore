@@ -8,6 +8,17 @@ GET	http://localhost:8080/ClientStore/rs/clients/id/7		findById(7)
 PUT	http://localhost:8080/ClientStore/rs/clients/id/10		update a client id=10
 
 Requests for Addresses
-GET	http://localhost:8080/ClientStore/addresses/id/10		get adresses client id=10
+GET	http://localhost:8080/ClientStore/addresses/id/10		get adresses client id=10		OK
 PUT	http://localhost:8080/ClientStore/addresses/id/10		update adresses client id=10
 POST	http://localhost:8080/ClientStore/addresses/id/8		create address in client id=8
+PUT	http://localhost:8080/ClientStore/addresses/id/2		update address in Client id=2
+
+
+	public List<AddressesAPI> showAll(int id) {
+		Clients clients = this.clientsDao.findById(id);
+		
+		clients.get
+		
+		List<Addresses> dbAddresses = clients.getAddresses();
+ 		return dbAddresses;	
+	}

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +19,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 /* http://www.javainterviewpoint.com/spring-restful-web-services-crud-example/ */
@@ -27,14 +27,20 @@ import com.sun.istack.NotNull;
 @Entity
 @Table(name = "addresses")
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NamedQuery(name="Addresses.findAll", query="SELECT c FROM Addresses c")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Addresses")	
 public class Addresses implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", unique = true)
-    private int id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@Column(name = "id", unique = true)
+    private Integer id;
 
     @NotNull
     @Column(name = "country", length = 30)	    
@@ -53,16 +59,16 @@ public class Addresses implements Serializable {
     private String addressline;
     
     @ManyToOne(fetch = FetchType.EAGER )
-    @JoinColumn(name="client_id", nullable=false)
+    @JoinColumn(name="client_id")
 	@Cascade(CascadeType.ALL)
     private Clients clients;
     
     
-    public int getAddressId() {
+    public Integer getId() {
 		return id;
 	}
 
-	public void setAddressId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
     
@@ -104,6 +110,13 @@ public class Addresses implements Serializable {
 
 	public void setClient(Clients clients) {
 		this.clients = clients;
+	}
+
+	@Override
+	public String toString() {
+		return "Addresses [id=" + id + ", country=" + country + ", city=" + city + ", zipcode=" + zipcode
+				+ ", addressline=" + addressline + ", clients=" + clients + "]";
 	} 
+	
 }
 

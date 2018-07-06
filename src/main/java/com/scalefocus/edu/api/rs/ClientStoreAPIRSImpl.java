@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.google.gson.JsonObject;
 import com.scalefocus.edu.api.ClientStoreAPIRS;
 import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
@@ -150,6 +151,17 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 		return  null;
 	}
 	
+	@PUT
+	@Path("/addresses/id/{id}/id/{id}")
+	@Consumes("application/json")
+	@Produces("application/json")
+	@Override
+	public Response editAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {
+		System.out.println("~~~~~~~~~~~~~~~");
+		addressStoreService.editAddresses(id, addressesAPI);
+		return  null;
+	}
+	
 	@DELETE
 	@Path("/addresses/id/{id}")		
 	@Produces("application/json")
@@ -169,5 +181,6 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 		System.out.println("$$$$$$$$$$$$$");
 		addressStoreService.showAll(id);
 		return null;
+		
 	}
 }

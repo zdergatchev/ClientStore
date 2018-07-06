@@ -2,13 +2,18 @@ package com.scalefocus.edu.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.Response;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
+import com.scalefocus.edu.db.dao.AddressesDao;
 import com.scalefocus.edu.db.dao.ClientsDao;
 import com.scalefocus.edu.db.model.Addresses;
 import com.scalefocus.edu.db.model.Clients;
@@ -18,6 +23,9 @@ public class ClientStoreService {
 
 	@Autowired
 	private ClientsDao clientsDao;
+	
+	@Autowired
+	private AddressesDao addressesDao;
 
 	@Autowired
 	private DozerBeanMapper mapper;
@@ -170,69 +178,96 @@ public class ClientStoreService {
 	
 	public Addresses createAddresses(int id, AddressesAPI addressesAPI){
 		Clients clients = this.clientsDao.findById(id);
-		System.out.println(clients);
+		
 		List<Addresses> dbAddresses = new ArrayList<Addresses>();
 		
-		if (clients != null) {
-			for(int i = 0; i < dbAddresses.size(); i++) {
-				Addresses dbAddress = dbAddresses.get(i);				
-				dbAddress.setAddressId(addressesAPI.getAddressId());
-				dbAddress.setCountry(addressesAPI.getCountry());
-				dbAddress.setCity(addressesAPI.getCity());
-				dbAddress.setZipcode(addressesAPI.getZipcode());
-				dbAddress.setAddressline(addressesAPI.getAddressline());
+		if (clients.getAddresses().size() == 0) {
+			System.out.println("no addresses");
+			Addresses adr = mapper.map(addressesAPI, Addresses.class);
+			adr.setClient(clients);
+//			adr.setCountry(addressesAPI.getCountry());
+//			adr.setCity(addressesAPI.getCity());
+//			adr.setZipcode(addressesAPI.getZipcode());
+//			adr.setAddressline(addressesAPI.getAddressline());
+			System.out.println("id---------: " + adr.getId());
+			dbAddresses.add(adr);
+			clients.getAddresses().add(adr);
+			
+		}	else {
+			System.out.println("has addresses");
+			dbAddresses = clients.getAddresses();
+			
+			for (Addresses add : dbAddresses) {
+				if (add.getCity() != addressesAPI.getCity() && 	add.getCountry() != addressesAPI.getCountry() &&
+						add.getZipcode() != addressesAPI.getZipcode() && add.getAddressline() != addressesAPI.getAddressline()) {
+					Addresses adr = new Addresses();	
+					adr.setClient(clients);
+					adr.setCountry(addressesAPI.getCountry());
+					adr.setCity(addressesAPI.getCity());
+					adr.setZipcode(addressesAPI.getZipcode());
+					adr.setAddressline(addressesAPI.getAddressline());
+					dbAddresses.add(adr);
+					clients.setAddresses(dbAddresses);
+				}
+			}
+		}	
+
+//		clients.setAddresses(dbAddresses);
+//				this.addressesDao.save(addresses);
+//				this.clientsDao.save(clients);
+		System.out.println(dbAddresses.size());
+		System.out.println(clients.getAddresses());
+
+		this.clientsDao.save(clients);
 				
-				clients.setAddresses(dbAddresses);
-				this.clientsDao.save(clients);
-				System.out.println(this.clientsDao.save(clients));
-			}	
-		}
-		
-		return null;
+	   return null;
+
 	}
 	
-	public Addresses updateAddresses(int id, AddressesAPI addressesAPI){
-		Clients clients = this.clientsDao.findById(id);
-		System.out.println(clients);
-		List<Addresses> dbAddresses = new ArrayList<Addresses>();
-		if (clients != null & clients.getAddresses().isEmpty() != true) {	
-			for(int i = 0; i < dbAddresses.size(); i++) {
-				Addresses dbAddress = dbAddresses.get(i);				
-				dbAddress.setAddressId(addressesAPI.getAddressId());
-				dbAddress.setCountry(addressesAPI.getCountry());
-				dbAddress.setCity(addressesAPI.getCity());
-				dbAddress.setZipcode(addressesAPI.getZipcode());
-				dbAddress.setAddressline(addressesAPI.getAddressline());
-				
-				clients.setAddresses(dbAddresses);
-				this.clientsDao.save(clients);
-//			System.out.println(dbAddress);
-			}	
-		}
+	public Addresses updateAddresses(int id, AddressesAPI addressesAPI){		
+//		Clients clients = this.clientsDao.findById(id);
+		Addresses address = this.addressesDao.findById(id);
+
+		
+		if (address != null) {				
+			address.setCountry(addressesAPI.getCountry());
+			address.setCity(addressesAPI.getCity());
+			address.setZipcode(addressesAPI.getZipcode());
+			address.setAddressline(addressesAPI.getAddressline());
+		}			
+
+		this.addressesDao.save(address);
+
+		System.out.println(this.addressesDao.save(address));
 		
 		return null;
 	}
 	
 	public Addresses deleteAddresses(int id, AddressesAPI addressesAPI){
-		Clients clients = this.clientsDao.findById(id);
+		Addresses address = this.addressesDao.findById(id);
 
-		List<Addresses> dbAddresses = new ArrayList<Addresses>();
-		if (clients != null) {
-			for(int i = 0; i < dbAddresses.size(); i++) {
-//				Addresses dbAddress = dbAddresses.get(i);
-				dbAddresses.remove(i);
-				
-//				dbAddress.setAddressId(addressesAPI.getAddressId());
-//				dbAddress.setCountry(null);
-//				dbAddress.setCity(null);
-//				dbAddress.setZipcode(null);
-//				dbAddress.setAddressline(null);
-				
-				clients.setAddresses(dbAddresses);
-				this.clientsDao.save(clients);
-//			System.out.println(dbAddress);
+			if (address != null) {
+	
+				this.addressesDao.delete(address);
+
 			}	
-		}
+
+		return null;
+	}
+	
+	public Addresses editAddresses(int id, AddressesAPI addressesAPI){
+		Addresses address = this.addressesDao.findById(id);
+		
+		if (address != null) {				
+			address.setCountry(addressesAPI.getCountry());
+			address.setCity(addressesAPI.getCity());
+			address.setZipcode(addressesAPI.getZipcode());
+			address.setAddressline(addressesAPI.getAddressline());
+		}			
+
+		this.addressesDao.save(address);
+
+		System.out.println(this.addressesDao.save(address));
 		
 		return null;
 	}
@@ -240,11 +275,27 @@ public class ClientStoreService {
 	public List<AddressesAPI> showAll(int id) {
 		Clients clients = this.clientsDao.findById(id);
 		
-		Iterable<Addresses> dbAddresses = clients.getAddresses();
+		List<Addresses> dbAddresses = clients.getAddresses();
 		for(Addresses a : dbAddresses){
-			System.out.println(a.getAddressId() + " " + a.getCountry() + " " + a.getCity() + " " + a.getZipcode());
+			System.out.println(a.getId() + " " + a.getCountry() + " " + a.getCity() + " " + a.getZipcode());
 		}
 //		dbClients.forEach(dbClient-> System.out.println(dbClient));
-		return null;		
-	 }
+ 		return null;	
+	}	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

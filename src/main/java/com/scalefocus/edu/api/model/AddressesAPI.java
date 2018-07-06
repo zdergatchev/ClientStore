@@ -13,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AddressesAPI {
 
 //	private int addressId;
-	private int id;
+	private Integer id;
 	@JsonProperty("country") private String country;
 	@JsonProperty("city") private String city;
 	@JsonProperty("zipcode") private String zipcode;
 	@JsonProperty("addressline") private String addressline;
-
+	
 	public AddressesAPI() {
 		super();
 	}
@@ -35,7 +35,7 @@ public class AddressesAPI {
 //		return addressId;
 //	}
 	
-	public int getAddressId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -43,7 +43,7 @@ public class AddressesAPI {
 //		this.addressId = addressId;
 //	}
 	
-	public void setAddressId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
