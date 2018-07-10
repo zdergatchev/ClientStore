@@ -1,0 +1,38 @@
+[
+	{
+	"country": "Bulgaria",
+    "city": "Sofia",
+    "zipcode": "1000",   
+	"addressline": "Vitosha Bul. 30A"
+  },
+  {
+	"country": "Bulgaria",
+    "city": "Pernik",
+    "zipcode": "2300",   
+	"addressline": "Mogiliche Str. 35" 
+  },
+  {
+	"country": "Bulgaria",
+    "city": "Sliven",
+    "zipcode": "8800",   
+	"addressline": "Sirma Str. 10"
+  },
+  {
+	"country": "Bulgaria",
+    "city": "Plovdiv",
+    "zipcode": "4000",   
+	"addressline": "Tzar Boris Bul. 128"
+  },
+  {
+	"country": "Bulgaria",
+    "city": "Varna",
+    "zipcode": "9000",   
+	"addressline": "Maria Louza Bul. 10B" 
+  },
+  {
+	"country": "Bulgaria",
+    "city": "Bourgas",
+    "zipcode": "8000",   
+	"addressline": "Varadar Str. 40"
+  }
+]

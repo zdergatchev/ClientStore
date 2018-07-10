@@ -10,16 +10,19 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.google.gson.JsonObject;
 import com.scalefocus.edu.api.ClientStoreAPIRS;
 import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
+import com.scalefocus.edu.db.model.Addresses;
+import com.scalefocus.edu.db.model.Clients;
 import com.scalefocus.edu.service.ClientStoreService;
 
 
@@ -36,10 +39,8 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 
 	@Autowired
 	private ClientStoreService clientStoreService;
-	
-	@Autowired
-	private ClientStoreService addressStoreService;
 
+	
 	@GET
 	@Path("/hi")
 	public String sayHi() {
@@ -47,26 +48,27 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 		return clientStoreService.sayHi();
 	}
 	
+/* https://stackoverflow.com/questions/8165908/return-a-list-of-objects-when-using-jax-rs */	
+/* https://dzone.com/articles/jax-rs-list-generic-type-erasure */
 	@GET
 	@Path("/clients")
-	@Produces("application/json")
 	@Override
-	public List<ClientsAPI> findAll() {
+	public Response findAll() {
 		System.out.println("@@@@@@@@@@@@@@");
-		clientStoreService.findAll();
-		return null;
+		List<ClientsAPI> allClients = clientStoreService.findAll();		
+		System.out.println(allClients);
+		return Response.status(200).entity(allClients).type(MediaType.APPLICATION_JSON).build();
+//		return null;
 	}
 	
 	@GET
 	@Path("/clients/id/{id}")	
-	@Produces("application/json")
 	@Override
 	public Response findById(@PathParam("id") int id) {	
 		 System.out.println("***********");
-		 System.out.println("id: " + id);
-		 
-		 clientStoreService.findById(id);
-		return null;
+		 System.out.println("id: " + id);		 
+		 Clients client = clientStoreService.findById(id);
+		 return Response.status(200).entity(client).type(MediaType.APPLICATION_JSON).build();
 	}
 	
 	@GET
@@ -75,8 +77,9 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	@Override
 	public Response findByEmail(@PathParam("email") String email) {
 		System.out.println("##############");
-		clientStoreService.findByEmail(email);
-		return null;
+		Clients client = clientStoreService.findByEmail(email);
+		return Response.status(200).entity(client).type(MediaType.APPLICATION_JSON).build();
+//		return null;
 	}	
 
 	@POST
@@ -86,9 +89,9 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	@Override	
     public Response createClient(@RequestBody ClientsAPI client) { 
 		System.out.println("..........");
-		 clientStoreService.createClient(client);
-
-        return null;
+		Clients clients = clientStoreService.createClient(client);
+		return Response.status(200).entity(clients).type(MediaType.APPLICATION_JSON).build();
+//      return null;
     }	
 
 
@@ -100,9 +103,10 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 //	public Response updateClient(@RequestBody int id, ClientsAPI clientsAPI) {
 //	public Response updateClient( @Context int id, ClientsAPI clientsAPI) {
 	public Response updateClient( @PathParam( "id" ) int id, ClientsAPI clientsAPI) {
-			System.out.println("^^^^^^^^^^^^^^");
-			clientStoreService.updateClient(id, clientsAPI);
-		return  null;
+		System.out.println("^^^^^^^^^^^^^^");
+		Clients client = clientStoreService.updateClient(id, clientsAPI);
+		return Response.status(200).entity(client).type(MediaType.APPLICATION_JSON).build();
+//		return  null;
 	}
 
 	@DELETE
@@ -114,8 +118,9 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 //	public Response deleteClient(@RequestBody int id) {	
 	public Response deleteClient(@PathParam( "id" ) int id) {	
 		 System.out.println("..........");
-		 clientStoreService.deleteClient(id);		
-		return null;
+		 Clients clients = clientStoreService.deleteClient(id);	
+		 return Response.status(200).entity(clients).type(MediaType.APPLICATION_JSON).build();
+//		 return null;
 	}
 
 	
@@ -130,25 +135,28 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	
 	@POST
 	@Path("/addresses/id/{id}")
-	@Consumes("application/json") 
-	@Produces("application/json")
 	@Override	
-	public Response createAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {
-		System.out.println("**********");
-		addressStoreService.createAddresses(id, addressesAPI);
-       return null;
+	public Response createAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {		
+		Addresses address = clientStoreService.createAddresses(id, addressesAPI);
+		return Response.status(200).entity(address).type(MediaType.APPLICATION_JSON).build();
+//		return Response.status(200).entity(address).build();
+//		return Response.status(200).entity(clientStoreService.findById(id).getAddresses()).type("application/json").build();
+//		return null;
 	}
 	
 
 	@PUT
 	@Path("/addresses/id/{id}")
 	@Consumes("application/json")
-	@Produces("application/json")
+	@Produces("application/json")	
 	@Override
 	public Response updateAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {
 		System.out.println("%%%%%%%%%%%%%%");
-		addressStoreService.updateAddresses(id, addressesAPI);
-		return  null;
+		Addresses address = clientStoreService.updateAddresses(id, addressesAPI);
+		return Response.status(200).entity(address).type(MediaType.APPLICATION_JSON).build();
+//		return Response.status(200).entity(address).type("application/json").build();
+//		return Response.status(201).build();
+		//return  null;
 	}
 	
 	@PUT
@@ -158,8 +166,10 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	@Override
 	public Response editAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {
 		System.out.println("~~~~~~~~~~~~~~~");
-		addressStoreService.editAddresses(id, addressesAPI);
-		return  null;
+		Addresses address = clientStoreService.editAddresses(id, addressesAPI);
+		return Response.status(200).entity(address).type(MediaType.APPLICATION_JSON).build();
+//		return Response.status(201).build();
+		//return  null;
 	}
 	
 	@DELETE
@@ -167,9 +177,12 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	@Produces("application/json")
 	@Override
 	public Response deleteAddresses(@PathParam( "id" ) int id, AddressesAPI addressesAPI) {
-		 System.out.println("&&&&&&&&&&&&&");
-		 addressStoreService.deleteAddresses(id, addressesAPI);
-		return null;
+		 System.out.println("&&&&&&&&&&&&&");	
+		 Addresses address = clientStoreService.deleteAddresses(id, addressesAPI);
+		 System.out.println(address);
+		 return Response.status(200).entity(address).type(MediaType.APPLICATION_JSON).build();
+//		 return Response.status(201).build();
+		//return null;
 	}
 
 	
@@ -177,10 +190,11 @@ public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 	@Path("/addresses/id/{id}")
 	@Produces("application/json")
 	@Override
-	public List<AddressesAPI> showAll(@PathParam( "id" ) int id) {
+	public Response showAll(@PathParam( "id" ) int id) {
 		System.out.println("$$$$$$$$$$$$$");
-		addressStoreService.showAll(id);
-		return null;
-		
+		List<AddressesAPI> allAddresses = clientStoreService.showAll(id);
+		return Response.status(200).entity(allAddresses).type(MediaType.APPLICATION_JSON).build();
+//		clientStoreService.showAll(id);
+//		return null;		
 	}
 }

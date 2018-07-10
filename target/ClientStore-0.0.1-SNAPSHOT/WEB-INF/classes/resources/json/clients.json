@@ -1,0 +1,32 @@
+[
+	{
+	"email": "georgi_g@gmail.com",
+    "firstName": "Georgi",
+    "lastName": "Georgiev"    
+  },
+  {
+	"email": "ivan.ivanov@hotmail.com",
+    "firstName": "Ivan",
+    "lastName": "Ivanov"   
+  },
+  {
+	"email": "petar_pt@yahoo.com",
+    "firstName": "Patar",
+    "lastName": "Petrov"    
+  },
+  {
+	"email": "anna.petrova@mail.bg",
+    "firstName": "Anna",
+    "lastName": "Petrova"
+  },
+  {
+	"email": "lili_i@abv.bg",
+    "firstName": "Lili",
+    "lastName": "Ivanova"    
+  },
+  {
+	"email": "stefan_st@abv.bg",
+    "firstName": "Stefan",
+    "lastName": "Stefanov"
+  }
+]

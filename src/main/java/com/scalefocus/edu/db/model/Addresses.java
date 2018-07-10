@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,10 +14,12 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 /* http://www.javainterviewpoint.com/spring-restful-web-services-crud-example/ */
@@ -39,8 +40,8 @@ public class Addresses implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@Column(name = "id", unique = true)
-    private Integer id;
+	@Column(name = "id", unique = true)
+    private int id;
 
     @NotNull
     @Column(name = "country", length = 30)	    
@@ -58,17 +59,21 @@ public class Addresses implements Serializable {
     @Column(name = "addressline", length = 100)
     private String addressline;
     
-    @ManyToOne(fetch = FetchType.EAGER )
-    @JoinColumn(name="client_id")
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name="client_id")
 	@Cascade(CascadeType.ALL)
+    @ManyToOne(targetEntity = Clients.class)
+    @JoinColumn(referencedColumnName = "client_id")
+    @XmlTransient
+    @JsonIgnore
     private Clients clients;
     
     
-    public Integer getId() {
+    public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
     

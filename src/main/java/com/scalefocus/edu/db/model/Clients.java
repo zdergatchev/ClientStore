@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 /* http://www.javainterviewpoint.com/spring-restful-web-services-crud-example/ */
@@ -38,7 +40,7 @@ public class Clients implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "client_id", unique = true)
-    @PrimaryKeyJoinColumn(name = "client_id")
+    //@PrimaryKeyJoinColumn(name = "client_id")
     private int id;
 
     @NotNull
@@ -52,9 +54,10 @@ public class Clients implements Serializable {
     @Column(name = "last_name", length = 20)
     private String lastName;
     
-    @OneToMany(mappedBy="clients", fetch = FetchType.EAGER )
+    //@OneToMany(mappedBy="clients", fetch = FetchType.EAGER )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "clients", targetEntity = Addresses.class)
 	@Cascade(CascadeType.ALL)
-	private List<Addresses> addresses;
+ 	private List<Addresses> addresses;
     
     public Clients() {
     }
@@ -105,13 +108,13 @@ public class Clients implements Serializable {
 
 	public void setAddresses(List<Addresses> addresses) {			
 		this.addresses = addresses;
-	} 
-	
+	}
+
 	@Override
 	public String toString() {
-		return "id: '" + this.id + "', email: '" + this.email + "', FirstName: '" + this.firstName + "', LastName: '" + this.lastName + "'";
+		return "Clients [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
-	
+
 }
 
 
