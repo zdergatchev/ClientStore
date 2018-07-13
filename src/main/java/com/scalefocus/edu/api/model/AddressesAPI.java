@@ -1,23 +1,29 @@
 package com.scalefocus.edu.api.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /* https://stackoverflow.com/questions/7105745/how-to-specify-jackson-to-only-use-fields-preferably-globally */
 /* https://stackoverflow.com/questions/7105745/how-to-specify-jackson-to-only-use-fields-preferably-globally/22074210 */
 /* https://springframework.guru/category/java/page/2/ */
 /* After @JsonAutoDetect(fieldVisibility = Visibility.ANY) will serializes/deserialize to json the fields */
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AddressesAPI {
 
 //	private int addressId;
 	private Integer id;
-	@JsonProperty("country") private String country;
-	@JsonProperty("city") private String city;
-	@JsonProperty("zipcode") private String zipcode;
-	@JsonProperty("addressline") private String addressline;
+	//@JsonProperty("country")
+	private String country;
+	//@JsonProperty("city")
+	private String city;
+	//@JsonProperty("zipcode")
+	private String zipcode;
+	//@JsonProperty("addressline")
+	private String addressline;
 	
 	public AddressesAPI() {
 		super();

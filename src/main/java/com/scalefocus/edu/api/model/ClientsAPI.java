@@ -2,19 +2,26 @@ package com.scalefocus.edu.api.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /* https://springframework.guru/category/java/page/2/ */
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ClientsAPI {
 	
 	private int id;
-	@JsonProperty("email") private String email;
-	@JsonProperty("firstName") private String firstName;
-	@JsonProperty("lastName") private String lastName;
-	@JsonProperty("addresses") private List<AddressesAPI> addresses;
+	//@JsonProperty("email")
+	private String email;
+	//@JsonProperty("firstName")
+	private String firstName;
+	//@JsonProperty("lastName") 
+	private String lastName;
+	//@JsonProperty("addresses")
+	private List<AddressesAPI> addresses;
 	
 	public ClientsAPI(String email, String firstName, String lastName, List<AddressesAPI> addresses) {
 		super();

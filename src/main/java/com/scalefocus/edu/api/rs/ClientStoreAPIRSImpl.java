@@ -33,7 +33,7 @@ import com.scalefocus.edu.service.ClientStoreService;
 
 @Produces("application/json")
 @Consumes({ "application/json" })
-@Path("/")
+//@Path("/")
 @Controller
 public class ClientStoreAPIRSImpl implements ClientStoreAPIRS {
 

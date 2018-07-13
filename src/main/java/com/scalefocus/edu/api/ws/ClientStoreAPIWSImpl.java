@@ -2,101 +2,76 @@ package com.scalefocus.edu.api.ws;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.scalefocus.edu.api.ClientStoreAPIWS;
-import com.scalefocus.edu.api.model.AddressesAPI;
 import com.scalefocus.edu.api.model.ClientsAPI;
+import com.scalefocus.edu.db.model.Clients;
 import com.scalefocus.edu.service.ClientStoreService;
 
 @Controller
-@WebService
- public class ClientStoreAPIWSImpl implements ClientStoreAPIWS {
-
+@WebService(targetNamespace = "http://localhost:8080/ClientStore/ws/clients?wsdl")
+public class ClientStoreAPIWSImpl {
+	//public class ClientStoreAPIWSImpl implements ClientStoreAPIWS {
 
 	@Autowired
 	private ClientStoreService clientStoreService;
 	
-	@POST
-	@Path("/clients/{id}")
-	@Consumes("application/xml")
-	@Override
-	public Response createClient(@RequestBody ClientsAPI client) { 
+	@WebMethod
+	@WebResult(name="clients")
+	public List<ClientsAPI> findAll() {
+		System.out.println("----------");
+		List<ClientsAPI> allClients = clientStoreService.findAll();		
+		//System.out.println(allClients);
+		//return allClients;
+		return allClients;
+	}	
+	
+	public Clients createClient(@WebParam ClientsAPI client) { 
 		System.out.println("..........");
-		clientStoreService.createClient(client);
-
-	    return null;
+		Clients clients = clientStoreService.createClient(client);
+		return clients;
 	 }
 	
-	@PUT
-	@Path("/clients/{id}")
-	@Consumes("application/xml")
-	@Override
-	public Response updateClient(@RequestBody int id, ClientsAPI clientsAPI) {
-			System.out.println("^^^^^^^^^^^^^^");
-			clientStoreService.updateClient(id, clientsAPI);
-		return  null;
-	}	
-	
-	@DELETE
-	@Path("/clients/{id}")	
-	@Consumes("application/xml")
-	@Override
-	public Response deleteClient(@RequestBody int id) {	
-		 System.out.println("..........");
-		 clientStoreService.deleteClient(id);		
-		return null;
-	}
-	
-	@GET
-	@Path("/clients/id/{id}")
-	@Produces("application/xml")
-	@Override
-	public Response findById(@RequestBody int id) {	
+
+	public Clients findById(@WebParam(name = "id") int id) {	
 		 System.out.println("***********");
-		 clientStoreService.findById(id);
-		return null;
+		 System.out.println("id: " + id);		 
+		 Clients clients = clientStoreService.findById(id);
+		 return clients;
 	}
-
-	@GET
-	@Path("/clients/{email}")
-	@Produces("application/xml")
-	@Override
-	public Response findByEmail(@RequestBody String email) {
+	
+	public Clients findByEmail(@WebParam(name = "email") String email) {
 		System.out.println("##############");
-		clientStoreService.findByEmail(email);
-		return null;
+		Clients clients = clientStoreService.findByEmail(email);
+//		return Response.status(200).entity(client).type(MediaType.APPLICATION_XML).build();
+		return clients;
 	}
 
-	@GET
-	@Path("/clients")
-	@Produces("application/xml")
-	@Override
-	public List<ClientsAPI> findAll() {
-		System.out.println("@@@@@@@@@@@@@@");
-		clientStoreService.findAll();
-		return null;
-	}
 
-	@GET
-	@Path("/hi")
-	@Produces("application/xml")
+	public Clients updateClient(@WebParam(name = "id") int id, ClientsAPI clientsAPI) {
+		System.out.println("^^^^^^^^^^^^^^");
+		Clients clients = clientStoreService.updateClient(id, clientsAPI);
+//		return Response.status(200).entity(client).type(MediaType.APPLICATION_XML).build();
+		return clients;
+	}
+	
+	public Clients deleteClient(@WebParam(name = "id") int id) {	
+		 System.out.println("..........");
+		 Clients clients = clientStoreService.deleteClient(id);	
+//		 return Response.status(200).entity(clients).type(MediaType.APPLICATION_XML).build();
+		 return clients;
+	}
+	
+	@WebMethod
 	public String sayHi() {
-		System.out.println("RRRRRRRRRR");
-		return clientStoreService.sayHi();
-	}	
+		return "Hi";
+	}
 }
 
 

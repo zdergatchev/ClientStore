@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.Endpoint;
+
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxws.EndpointImpl;
@@ -13,7 +14,9 @@ import org.springframework.context.annotation.ImportResource;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.scalefocus.edu.api.rs.ClientStoreAPIRSImpl;
+import com.scalefocus.edu.api.ws.AddressesAPIWSImpl;
 import com.scalefocus.edu.api.ws.ClientStoreAPIWSImpl;
+
 
 @Configuration
 @ImportResource({ "classpath:META-INF/cxf/cxf.xml",
@@ -24,8 +27,11 @@ public class CXFConfig {
 	@Autowired
 	private Bus bus;
 
-	//@Autowired
-	//private ClientStoreAPIWSImpl clientStoreWS;
+	@Autowired
+	private ClientStoreAPIWSImpl clients;
+	
+	@Autowired
+	private AddressesAPIWSImpl addresses;
 	
 	@Autowired
 	private ClientStoreAPIRSImpl clientStoreRS;
@@ -34,8 +40,10 @@ public class CXFConfig {
 	@PostConstruct
 	public void init() {
 		// Initializing WS Service endpoint
-		//Endpoint endpoint = new EndpointImpl(bus, clientStoreWS);
-		//endpoint.publish("/ws/clientStore");
+		Endpoint endpoint = new EndpointImpl(bus, clients);
+		endpoint.publish("/ws/clients");
+		Endpoint endpoint1 = new EndpointImpl(bus, addresses);
+		endpoint1.publish("/ws/addresses");
 		System.out.println("MMMMMMMMMMM");
 		// initializes JAX-RS provider and service endpoint
 		// https://cwiki.apache.org/confluence/display/CXF20DOC/JAXRS+Services+Configuration //

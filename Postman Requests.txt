@@ -1,17 +1,22 @@
-Requests for Clients
+REST - Requests for Clients
 
-DELETE	http://localhost:8080/ClientStore/clients/3			delete a client id=1
-POST	http://localhost:8080/ClientStore/clients/			create a client
-GET	http://localhost:8080/ClientStore/clients/email/georgi44_g@mail.bg
-GET	http://localhost:8080/ClientStore/clients/			findAll()
-GET	http://localhost:8080/ClientStore/clients/id/7			findById(7)
-PUT	http://localhost:8080/ClientStore/clients/id/10			update a client id=10
+DELETE	http://localhost:8080/ClientStore/clients/3				delete a client id=1
+POST	http://localhost:8080/ClientStore/clients/				create a client
+GET	http://localhost:8080/ClientStore/clients/email/georgi44_g@mail.bg	findByEmail()
+GET	http://localhost:8080/ClientStore/clients/				findAll()
+GET	http://localhost:8080/ClientStore/clients/id/7				findById(7)
+PUT	http://localhost:8080/ClientStore/clients/id/10				update a client id=10
 
-Requests for Addresses
-GET	http://localhost:8080/ClientStore/addresses/id/10		get adresses client id=10		
-PUT	http://localhost:8080/ClientStore/addresses/id/10		update adresses client id=10
-POST	http://localhost:8080/ClientStore/addresses/id/8		create address in client id=8
-PUT	http://localhost:8080/ClientStore/addresses/id/2		update address id=2
-DELETE	http://localhost:8080/ClientStore/addresses/id/6		update address id=6
+REST - Requests for Addresses
 
+GET	http://localhost:8080/ClientStore/addresses/id/10			get adresses client id=10		
+PUT	http://localhost:8080/ClientStore/addresses/id/10			update adresses client id=10
+POST	http://localhost:8080/ClientStore/addresses/id/8			create address in client id=8
+PUT	http://localhost:8080/ClientStore/addresses/id/2			update address id=2
+DELETE	http://localhost:8080/ClientStore/addresses/id/6			update address id=6
+
+SOAP - Requests for Clients
+
+ClientStore
+http://localhost:8080/ClientStore/clients?wsdl					
 
