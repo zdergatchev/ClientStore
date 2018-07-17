@@ -7,6 +7,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -18,6 +20,8 @@ import com.scalefocus.edu.service.ClientStoreService;
 @WebService(targetNamespace = "http://localhost:8080/ClientStore/ws/clients?wsdl")
 public class ClientStoreAPIWSImpl {
 	//public class ClientStoreAPIWSImpl implements ClientStoreAPIWS {
+	
+	private static final Logger log = LoggerFactory.getLogger(ClientStoreAPIWSImpl.class);
 
 	@Autowired
 	private ClientStoreService clientStoreService;
@@ -27,6 +31,7 @@ public class ClientStoreAPIWSImpl {
 	public List<ClientsAPI> findAll() {
 		System.out.println("----------");
 		List<ClientsAPI> allClients = clientStoreService.findAll();		
+		log.info(allClients.toString());
 		//System.out.println(allClients);
 		//return allClients;
 		return allClients;
